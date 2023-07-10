@@ -22,6 +22,14 @@ resolvers:
     dataSource: booktable_ds
     request: resolvers/Query.listBook.request.vtl
     response: resolvers/Query.listBooks.response.vtl
+
+  myOrders:
+    type: Query
+    field: myOrders
+    kind: UNIT
+    dataSource: ordertable_ds
+    request: resolvers/Query.myOrders.request.vtl
+    response: resolvers/Query.myOrders.response.vtl
   
   createBook:
     type: Mutation
