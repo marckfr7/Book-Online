@@ -1,0 +1,53 @@
+name: AppSync-Book-Api
+authentication:
+  type: 'AMAZON_COGNITO_USER_POOLS'
+  config:
+    userPoolId: !Ref CognitoUserPool
+    awsRegion: us-east-1
+    defaultAction: ALLOW
+
+resolvers:
+  getBookbyID:
+    type: Query
+    field: getBookbyID
+    kind: UNIT
+    dataSource: booktable_ds
+    request: resolvers/Query.getBookbyID.request.vtl
+    response: resolvers/Query.getBookbyID.response.vtl
+
+  listBook:
+    type: Query
+    field: listBook
+    kind: UNIT
+    dataSource: booktable_ds
+    request: resolvers/Query.listBook.request.vtl
+    response: resolvers/Query.listBooks.response.vtl
+  
+  createBook:
+    type: Mutation
+    field: createBook
+    kind: UNIT
+    dataSource: booktable_ds
+    request: resolvers/Mutation.createBook.request.vtl
+    response: resolvers/Mutation.createBook.response.vtl
+
+  createOrders:
+    type: Mutation
+    field: createOrders
+    kind: UNIT
+    dataSource: ordertable_ds
+    request: resolvers/Mutation.createOrders.request.vtl
+    response: resolvers/Mutation.createOrders.response.vtl
+
+dataSources:
+  booktable_ds:
+    type: AMAZON_DYNAMODB
+    description: 'Book table'
+    config:
+      tableName: !Ref booktable
+
+  ordertable_ds:
+    type: AMAZON_DYNAMODB
+    description: 'Orders table'
+    config:
+      tableName: !Ref ordertable

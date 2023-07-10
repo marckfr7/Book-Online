@@ -1,0 +1,33 @@
+service: backend
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.9
+  stage: dev
+  region: us-east-1
+
+
+plugins:
+  - serverless-appsync-plugin
+
+
+appSync:
+  ${file(custom-appSync.yml)}
+
+#package:
+#  patterns:
+#    - '!exclude-me.py'
+#    - '!exclude-me-dir/**'
+#    - include-me.py
+#    - include-me-dir/**
+
+# functions:
+#   hello:
+#     handler: handler.hello
+
+	
+resources:
+  Resources:
+    ${file(resources.yml)}
