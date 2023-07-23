@@ -140,7 +140,7 @@ CognitoCustomersIAMRole:
               Action:
                 - dynamodb:GetItem
                 - dynamodb:Scan
-                - dynamodb:BatchGetItem
+                - dynamodb:Query
               Resource:
                 - !GetAtt booktable.Arn
     RoleName: Customers-Role

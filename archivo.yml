@@ -291,3 +291,265 @@ plugins:
   $item.${field2}
   ...
 #end
+
+#####################################################
+
+appSync:
+    name: ${self:service}-gql-${self:provider.stage}
+    apiKey: ${self:service}-${opt:stage}
+    authenticationType: AMAZON_COGNITO_USER_POOLS
+    userPoolConfig:
+      awsRegion: ${opt:region, 'us-west-2'}
+      defaultAction: ALLOW
+      userPoolId: ${ssm:/${opt:stage}/dm-idp-provider-cd/cognito-user-pool} 
+    schema: Gql/schema.graphql
+    serviceRole:
+      Ref: AppSyncServiceRole
+    logConfig:
+      loggingRoleArn:
+        Fn::GetAtt:
+          - AppSyncServiceRole
+          - Arn
+      level: ALL # NONE | ERROR | ALL
+    mappingTemplatesLocation: Gql/MappingTemplates
+    mappingTemplates:
+      
+      - dataSource: DSConsentApi
+        type: Query
+        field: GetLegalTerms
+        request: consent_manager/GetLegalTerms.request.vm
+        response: consent_manager/GetLegalTerms.response.vm
+      
+      - dataSource: DSConsentApi
+        type: Query
+        field: GetSubjects
+        request: consent_manager/GetSubjects.request.vm
+        response: consent_manager/GetSubjects.response.vm
+      
+      - dataSource: DSConsentApi
+        type: Query
+        field: GetConsents
+        request: consent_manager/GetConsents.request.vm
+        response: consent_manager/GetConsents.response.vm
+
+      - dataSource: DSClauseContent
+        type: Mutation
+        field: MergeTouContent
+        request: 'tou_manager/MergeTouContent.request.vm'
+        response: 'tou_manager/MergeTouContent.response.vm'
+      
+      - dataSource: DSClauseContent
+        type: Mutation
+        field: MergeClauseContent
+        request: 'tou_manager/MergeClauseContent.request.vm'
+        response: 'tou_manager/MergeClauseContent.response.vm'
+      
+      - dataSource: DSClauseContent
+        type: Query
+        field: GetClauseTemplateDetail
+        request: 'tou_manager/ClauseTemplateDetail.request.vm'
+        response: 'tou_manager/ClauseTemplateDetail.response.vm'
+      
+      - dataSource: DSTouManager
+        type: Query
+        field: GetClausesRds
+        request: tou_manager/GetClausesRds.request.vm
+        response: tou_manager/GetClausesRds.response.vm
+      
+      - dataSource: DSTouManager
+        type: Query
+        field: GetClausesByQuery
+        request: tou_manager/GetClausesByQuery.request.vm
+        response: tou_manager/GetClausesByQuery.response.vm
+      
+      - dataSource: DSTouManager
+        type: Query
+        field: GetTou
+        request: tou_manager/GetTou.request.vm
+        response: tou_manager/GetTou.response.vm
+      
+      - dataSource: DSTouManager
+        type: Query
+        field: GetTousRds
+        request: tou_manager/GetTousRds.request.vm
+        response: tou_manager/GetTousRds.response.vm
+      
+      - dataSource: DSTouManager
+        type: Query
+        field: GetTousByQuery
+        request: tou_manager/GetTousByQuery.request.vm
+        response: tou_manager/GetTousByQuery.response.vm
+      
+      - dataSource: DSTouManager
+        type: Query
+        field: GetTouClauses
+        request: tou_manager/GetTouClauses.request.vm
+        response: tou_manager/GetTouClauses.response.vm
+      
+      - dataSource: DSTouManager
+        type: Mutation
+        field: CreateTOURds
+        request: tou_manager/CreateTouRds.request.vm
+        response: tou_manager/CreateTouRds.response.vm
+      
+      - dataSource: DSTouManager
+        type: Mutation
+        field: CreateTouFromTOU
+        request: tou_manager/CreateTouFromTOU.request.vm
+        response: tou_manager/CreateTouFromTOU.response.vm
+      
+      - dataSource: DSTouManager
+        type: Mutation
+        field: UpdateTou
+        request: tou_manager/UpdateTou.request.vm
+        response: tou_manager/UpdateTou.response.vm
+      
+      - dataSource: DSTouManager
+        type: Mutation
+        field: DeleteTou
+        request: tou_manager/DeleteTou.request.vm
+        response: tou_manager/DeleteTou.response.vm
+      
+      - dataSource: DSTouManager
+        type: Mutation
+        field: CreateTouVersion
+        request: tou_manager/CreateTouVersion.request.vm
+        response: tou_manager/CreateTouVersion.response.vm
+      
+      - dataSource: DSTouManager
+        type: Mutation
+        field: AddTouRdsClause
+        request: tou_manager/AddTouRdsClause.request.vm
+        response: tou_manager/AddTouRdsClause.response.vm
+
+      - dataSource: DSTouManager
+        type: Mutation
+        field: DeleteTouRdsClause
+        request: tou_manager/DeleteTouRdsClause.request.vm
+        response: tou_manager/DeleteTouRdsClause.response.vm
+      
+      - dataSource: DSTouManager
+        type: Mutation
+        field: CreateTouFromTemplate
+        request: tou_manager/CreateTouFromTemplate.request.vm
+        response: tou_manager/CreateTouFromTemplate.response.vm
+      
+      - dataSource: DSTouManager
+        type: Mutation
+        field: DuplicateTou
+        request: tou_manager/DuplicateTou.request.vm
+        response: tou_manager/DuplicateTou.response.vm
+
+      - dataSource: DSTouManager
+        type: Mutation
+        field: PublishTou
+        request: tou_manager/PublishTou.request.vm
+        response: tou_manager/PublishTou.response.vm
+      
+      - dataSource: DSTouManager
+        type: Mutation
+        field: CreateTemplate
+        request: template_manager/CreateTemplate.request.vm
+        response: template_manager/CreateTemplate.response.vm
+      
+      - dataSource: DSTouManager
+        type: Mutation
+        field: CreateFromTemplate
+        request: template_manager/CreateFromTemplate.request.vm
+        response: template_manager/CreateFromTemplate.response.vm
+      
+      - dataSource: DSTouManager
+        type: Mutation
+        field: UpdateTemplate
+        request: template_manager/UpdateTemplate.request.vm
+        response: template_manager/UpdateTemplate.response.vm
+      
+      - dataSource: DSTouManager
+        type: Mutation
+        field: DeleteTemplate
+        request: template_manager/DeleteTemplate.request.vm
+        response: template_manager/DeleteTemplate.response.vm
+      
+      - dataSource: DSTouManager
+        type: Mutation
+        field: PublishTemplate
+        request: template_manager/PublishTemplate.request.vm
+        response: template_manager/PublishTemplate.response.vm
+      
+      - dataSource: DSTouManager
+        type: Mutation
+        field: CreateTemplateVersion
+        request: template_manager/CreateTemplateVersion.request.vm
+        response: template_manager/CreateTemplateVersion.response.vm
+
+      - dataSource: DSTouManager
+        type: Mutation
+        field: AddTemplateClause
+        request: template_manager/AddTemplateClause.request.vm
+        response: template_manager/AddTemplateClause.response.vm
+      
+      - dataSource: DSTouManager
+        type: Query
+        field: GetTouStates
+        request: tou_manager/GetTouStates.request.vm
+        response: tou_manager/GetTouStates.response.vm
+      
+      - dataSource: DSTouManager
+        type: Query
+        field: GetTemplate
+        request: template_manager/GetTemplate.request.vm
+        response: template_manager/GetTemplate.response.vm
+      
+      - dataSource: DSTouManager
+        type: Query
+        field: GetTemplates
+        request: template_manager/GetTemplates.request.vm
+        response: template_manager/GetTemplates.response.vm
+      
+      - dataSource: DSTouManager
+        type: Query
+        field: GetTemplatesByQuery
+        request: template_manager/GetTemplatesByQuery.request.vm
+        response: template_manager/GetTemplatesByQuery.response.vm
+      
+      - dataSource: DSTouManager
+        type: Query
+        field: GetTemplateClauses
+        request: template_manager/GetTemplateClauses.request.vm
+        response: template_manager/GetTemplateClauses.response.vm
+      
+      - dataSource: DSTouManager
+        type: Mutation
+        field: DeleteTemplateClause
+        request: template_manager/DeleteTemplateClause.request.vm
+        response: template_manager/DeleteTemplateClause.response.vm
+      
+      - dataSource: DSTouManager
+        type: Mutation
+        field: SaveContent
+        request: template_manager/SaveContent.request.vm
+        response: template_manager/SaveContent.response.vm
+      
+    dataSources:
+      - type: HTTP
+        name: DSTouManager
+        description: 'Tou Manager api Http data source'
+        config:
+          endpoint: ${ssm:/${opt:stage}/dm-tou-manager-cd/tou-apigql-url}
+          
+      - type: HTTP
+        name: DSClauseContent
+        description: 'Clause Content api Http data source'
+        config:
+          endpoint: ${ssm:/${opt:stage}/dm-clause-content/apigateway-url}
+      
+      - type: HTTP
+        name: DSConsentApi
+        description: 'Consent api Http data source'
+        config:
+          endpoint: ${ssm:/${opt:stage}/dm-consentapi-gtou/apigql-url}
+
+    substitutions:
+      CONSENT_GQL_API_KEY: ${ssm:/${opt:stage}/dm-consentapi-gtou/apigql-apikey}
+      TOU_MANAGER_API_KEY: ${ssm:/${opt:stage}/dm-tou-manager-cd/tou-apigql-apikey}
+      CLAUSE_CONTENT_API_KEY:  ${ssm:/${opt:stage}/dm-clause-content/apigateway-apikey}

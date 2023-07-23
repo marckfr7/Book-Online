@@ -6,46 +6,49 @@ authentication:
     awsRegion: us-east-1
     defaultAction: ALLOW
 
+schema:
+  - 'Gql/schema.graphql'
+
 resolvers:
   getBookbyID:
     type: Query
     field: getBookbyID
     kind: UNIT
     dataSource: booktable_ds
-    request: resolvers/Query.getBookbyID.request.vtl
-    response: resolvers/Query.getBookbyID.response.vtl
+    request: Gql/MappingTemplates/que_book/Query.getBookbyID.request.vtl
+    response: Gql/MappingTemplates/que_book/Query.getBookbyID.response.vtl
 
   listBook:
     type: Query
     field: listBook
     kind: UNIT
     dataSource: booktable_ds
-    request: resolvers/Query.listBook.request.vtl
-    response: resolvers/Query.listBooks.response.vtl
+    request: Gql/MappingTemplates/que_book/Query.listBook.request.vtl
+    response: Gql/MappingTemplates/que_book/Query.listBooks.response.vtl
 
   myOrders:
     type: Query
     field: myOrders
     kind: UNIT
     dataSource: ordertable_ds
-    request: resolvers/Query.myOrders.request.vtl
-    response: resolvers/Query.myOrders.response.vtl
+    request: Gql/MappingTemplates/que_book/Query.myOrders.request.vtl
+    response: Gql/MappingTemplates/que_book/Query.myOrders.response.vtl
   
   createBook:
     type: Mutation
     field: createBook
     kind: UNIT
     dataSource: booktable_ds
-    request: resolvers/Mutation.createBook.request.vtl
-    response: resolvers/Mutation.createBook.response.vtl
+    request: Gql/MappingTemplates/muta_book/Mutation.createBook.request.vtl
+    response: Gql/MappingTemplates/muta_book/Mutation.createBook.response.vtl
 
   createOrders:
     type: Mutation
     field: createOrders
     kind: UNIT
     dataSource: ordertable_ds
-    request: resolvers/Mutation.createOrders.request.vtl
-    response: resolvers/Mutation.createOrders.response.vtl
+    request: Gql/MappingTemplates/muta_book/Mutation.createOrders.request.vtl
+    response: Gql/MappingTemplates/muta_book/Mutation.createOrders.response.vtl
 
 dataSources:
   booktable_ds:
